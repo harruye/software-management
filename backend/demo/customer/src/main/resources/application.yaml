@@ -1,0 +1,27 @@
+server:
+    port: 8081
+
+spring:
+    datasource:
+        url: jdbc:sqlserver://localhost:1434;DatabaseName=NLP;trustServerCertificate=true
+        username: sa
+        password: szy19991006
+        driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+    mvc:
+        pathmatch:
+            matching-strategy: ant_path_matcher
+    profiles:
+        active: dev
+
+# Mybatis??
+mybatis:
+    # ??MyBatis?xml??????
+    mapper-locations: classpath*:demo/customer/src/main/resources/com/example/mapper/*.xml
+    type-aliases-package: com.example.pojo
+
+
+# ??sql
+logging:
+    level:
+        ssm.app.mapper : debug

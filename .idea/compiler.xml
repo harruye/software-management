@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="demo3" />
+        <module name="mbg" />
+        <module name="common" />
+        <module name="Customer" />
+        <module name="AIChatpot" />
+        <module name="backend" />
+        <module name="customer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AIChatpot" target="17" />
+      <module name="backend" target="17" />
+      <module name="common" target="17" />
+      <module name="Customer" target="17" />
+      <module name="customer" target="17" />
+      <module name="demo2" target="17" />
+      <module name="demo3" target="17" />
+      <module name="mbg" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="AIChatpot" options="-parameters" />
+      <module name="Customer" options="-parameters" />
+      <module name="backend" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="customer" options="-parameters" />
+      <module name="demo2" options="-parameters" />
+      <module name="demo3" options="-parameters" />
+      <module name="mbg" options="-parameters" />
+    </option>
+  </component>
+</project>

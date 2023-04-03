@@ -1,0 +1,1 @@
+This week, I installed the Vue3 scaffolding and completed its configuration. I also learned the Vue3 template syntax and lifecycle and wrote some demos to deepen our familiarity with this syntax.I have almost accomplished our goals for this week.

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/backend/demo/AIChatpot/AIChatpot.iml" filepath="$PROJECT_DIR$/backend/demo/AIChatpot/AIChatpot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/demo3/Customer/Customer.iml" filepath="$PROJECT_DIR$/backend/demo3/Customer/Customer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/demo/common/common.iml" filepath="$PROJECT_DIR$/backend/demo/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/demo/customer/customer.iml" filepath="$PROJECT_DIR$/backend/demo/customer/customer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/demo/demo2.iml" filepath="$PROJECT_DIR$/backend/demo/demo2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/demo3/demo3.iml" filepath="$PROJECT_DIR$/backend/demo3/demo3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend.iml" filepath="$PROJECT_DIR$/frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/demo/mbg/mbg.iml" filepath="$PROJECT_DIR$/backend/demo/mbg/mbg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/software-project-management.iml" filepath="$PROJECT_DIR$/.idea/software-project-management.iml" />
+    </modules>
+  </component>
+</project>
