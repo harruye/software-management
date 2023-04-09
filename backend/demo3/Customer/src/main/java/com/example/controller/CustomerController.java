@@ -29,11 +29,38 @@ public class CustomerController {
         Customer customer=userService.getCustomer(id);
         return CommonResult.success(customer);
     }
+
     @PostMapping("/finduserbyId")
+    @ResponseBody
     public CommonResult<Customer> findCustomerbyId(@RequestBody Customer customer){
         Customer res=userService.getCustomer(customer.getUid());
         return CommonResult.success(res);
     }
 
+    @PostMapping("/adduser")
+    @ResponseBody
+    public CommonResult<Customer> addCustomer(@RequestBody Customer customer){
+        customer.setUid(null);
+        Customer res=userService.addCustomer(customer);
+        return CommonResult.success(res);
+    }
+
+    @PostMapping("/updateuser")
+    @ResponseBody
+    public CommonResult<Customer> updateCustomer(@RequestBody Customer customer){
+        return CommonResult.success(userService.updateCustomer(customer));
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public CommonResult<Customer> login(@RequestBody Customer request){
+        Customer customer=userService.getCustomer(request.getUid());
+        if(customer.getUid().equals(request.getUid())){
+            return CommonResult.success(customer);
+        }
+        else {
+            return null;
+        }
+    }
 
 }
