@@ -5,12 +5,12 @@
       <list>
         <option value="$PROJECT_DIR$/backend/pom.xml" />
         <option value="$PROJECT_DIR$/backend/demo/pom.xml" />
-        <option value="$PROJECT_DIR$/backend/demo/common/pom.xml" />
         <option value="$PROJECT_DIR$/backend/demo/customer/pom.xml" />
         <option value="$PROJECT_DIR$/backend/demo/AIChatpot/pom.xml" />
         <option value="$PROJECT_DIR$/backend/demo/mbg/pom.xml" />
         <option value="$PROJECT_DIR$/backend/demo3/pom.xml" />
         <option value="$PROJECT_DIR$/backend/demo3/Customer/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/demo3/AIChatpot/pom.xml" />
       </list>
     </option>
   </component>

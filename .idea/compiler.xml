@@ -13,11 +13,14 @@
         <module name="Customer" />
         <module name="AIChatpot" />
         <module name="backend" />
+        <module name="AIChatpot (1)" />
         <module name="customer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="AIChatpot" target="17" />
+      <module name="AIChatpot (1)" target="17" />
+      <module name="AIChatpot (2)" target="17" />
       <module name="backend" target="17" />
       <module name="common" target="17" />
       <module name="Customer" target="17" />
@@ -30,6 +33,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AIChatpot" options="-parameters" />
+      <module name="AIChatpot (1)" options="-parameters" />
       <module name="Customer" options="-parameters" />
       <module name="backend" options="-parameters" />
       <module name="common" options="-parameters" />
