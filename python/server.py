@@ -5,6 +5,7 @@ from xmlrpc.server import SimpleXMLRPCRequestHandler
 import time
 
 from MRC import answer_question
+from ocr.ocr import pic_to_text
 from textrank2 import getSummary
 from trans import summary
 
@@ -67,6 +68,13 @@ def MRC(question,context):
     return resjson
 
 server.register_function(MRC, 'MRC')
+def OCR(pic_path):
+    text=pic_to_text(pic_path,"thresh")
+    res = {"file_path": pic_path, "article": text}
+    resjson = json.dumps(res, ensure_ascii=False)
+    return resjson
+
+server.register_function(OCR, 'OCR')
 # Run the server's main loop
 server.serve_forever()
 

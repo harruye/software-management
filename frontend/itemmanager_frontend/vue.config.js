@@ -7,10 +7,11 @@ module.exports = defineConfig({
     //proxy: 代理
     proxy: {
       // 必须重启服务器, 配置才能生效
+
       // 如果请求地址是 /douyu 开头的, 则被当前代理处理
       '/backend': {
         // target: 由服务器帮助到此域名中请求数据 -- 代理
-        target: 'http://localhost:8081',
+        target: 'http://localhost:8088',
         changeOrigin: true, //代表 域名不同,需要启动代理模式
         // 路径重写: 真正发送的请求地址中, 要去掉 /douyu 开头
         pathRewrite: {

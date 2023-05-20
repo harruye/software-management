@@ -41,6 +41,7 @@ public class CustomerController {
     @PostMapping("/adduser")
     @ResponseBody
     public CommonResult<Customer> addCustomer(@RequestBody Customer customer){
+        System.out.println("accept!");
         customer.setUid(null);
         Customer res=userService.addCustomer(customer);
         return CommonResult.success(res);
@@ -55,6 +56,7 @@ public class CustomerController {
     @PostMapping("/login")
     @ResponseBody
     public CommonResult<Customer> login(@RequestBody Customer request){
+        //System.out.println("accept!");
         Customer customer=userService.getCustomer(request.getUid());
         if(customer.getUid().equals(request.getUid())){
 
