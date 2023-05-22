@@ -5,6 +5,7 @@ import com.example.backend.pojo.Customer;
 import com.example.backend.pojo.vo.MRCVo;
 import com.example.backend.pojo.vo.SummaryVo;
 import com.example.backend.service.PythonRPCService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.xmlrpc.XmlRpcException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/AI")
 @ResponseBody
+@Slf4j
 public class AIController {
     @Autowired
     PythonRPCService pythonRPCService;
@@ -35,13 +37,15 @@ public class AIController {
 
     @PostMapping("/MRC")
     public CommonResult<String> getanswer(@RequestBody MRCVo req) throws MalformedURLException, XmlRpcException{
+        log.info(req.getQuestion());
         Map result=pythonRPCService.answer_question(req.getQuestion(), req.getContext());
         return CommonResult.success((String)result.get("answer"));
     }
 
     @PostMapping("/OCR")
-    public CommonResult<String> getarticle(@RequestBody MultipartFile file) throws IOException, XmlRpcException {
-        String path="E:\\software-project-management\\python\\pic";
+    public CommonResult<String> getarticle(MultipartFile file) throws IOException, XmlRpcException {
+        System.out.println("get!");
+        String path="E:\\software-project-management\\python\\pic\\pic.png";
         File savefile=new File(path);
         file.transferTo(savefile);
         /*OCR算法*/

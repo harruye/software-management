@@ -5,30 +5,30 @@
     </el-header>
     <el-main>
       <div>
-        请先上传文章
+        <el-button type="primary" @click="dialogVisible = true">上传文章</el-button>
       </div>
       <el-card class="message-card" v-for="(message, index) in messages" :key="index">
         <p><strong>{{message.sender}}:</strong> {{message.text}}</p>
       </el-card>
 
       <el-dialog v-model="dialogVisible" title="欢迎您!" :modal-append-to-body="false">
-        <el-input type="text" v-model="inputText" placeholder="请输入..." :disabled="inputOrUpload === 'upload'"></el-input>
-        <p v-if="inputOrUpload === 'upload'">已经选择文件</p>
+        <el-input type="textarea" v-model="inputText" placeholder="请输入..." :autosize="{ minRows: 2}"></el-input>
+
         <el-upload
-            ref="upload"
-            action="/upload"
+
+            :action="'http://localhost:8088/AI/OCR'"
             :on-success="handleUploadSuccess"
             :on-error="handleUploadError"
-            :disabled="inputOrUpload === 'input'"
             :before-upload="beforeUpload"
         >
-          <el-button size="small" type="primary">选取文件</el-button>
+        <el-button size="small" type="primary">选取文件</el-button>
         </el-upload>
 
-        <el-button size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-
-        <p v-if="inputOrUpload === 'input' && uploadFile">已经选择文件，请上传或取消选择</p>
-        <p v-else-if="inputOrUpload === 'input'">输入框已经有内容</p>
+<!--        <el-button size="small" type="success" @click="submitUpload">上传到服务器</el-button>-->
+<!--        <p v-if="inputOrUpload === 'input' && uploadFile">已经选择文件，请上传或取消选择</p>-->
+<!--        <p v-else-if="inputOrUpload === 'input'">输入框已经有内容</p>-->
+<!--        <p>{{ responseData }}</p> &lt;!&ndash; 添加此行以显示 responseData 的值 &ndash;&gt;-->
+        <el-button size="small" type="success" @click="confirm">确定</el-button> <!-- 添加此行来创建新的按钮 -->
       </el-dialog>
 
 
@@ -59,9 +59,10 @@
 
 <script>
 import { onMounted, ref, watch} from 'vue'
-import axios from "axios";
-import { ElDialog, ElUpload, ElInput, ElButton } from 'element-plus';
+
+import  { ElMessage,ElDialog, ElUpload, ElInput, ElButton } from 'element-plus';
 import {postdata} from "@/http/data";
+//import {postdata} from "@/http/data";
 
 export default {
   name: "index",
@@ -87,28 +88,35 @@ export default {
       { value: 'conversation', label: '对话', disabled: false }
     ])
     const value = ref('summary_extraction')
-
+    const responseData = ref(''); // 新的响应式引用，用于存储返回的数据
+    const img=ref('')
     onMounted(() => {
-      dialogVisible.value = true;
+      // dialogVisible.value = true;
     });
+
+    //点击确定按钮将弹窗取消
+    const closeDialog = () => {
+      dialogVisible.value = false; // 将 dialogVisible 的值设为 false 来关闭对话框
+    };
+
 
     const beforeUpload = (file) => {
       uploadFile.value = file.raw;
+      console.log(uploadFile)
       inputOrUpload.value = 'upload'; // 设置 inputOrUpload 值为 'upload'
       inputText.value = ''; // 清空输入框内容
-      return false; // 阻止自动上传
+      return true; // 阻止自动上传
     };
 
 
-    const handleUploadSuccess = (file) => {
+    const handleUploadSuccess = (res) => {
       console.log('File uploaded successfully');
-      dialogVisible.value = false;
-      uploadFile.value = file.raw;  // update the uploaded file ref
+      // dialogVisible.value = false;
+        // update the uploaded file ref
+      console.log(res)
+      inputText.value=res["data"]
       inputOrUpload.value = 'upload'; // Update inputOrUpload value to 'upload'
     };
-
-
-
 
 
     const handleUploadError = () => {
@@ -116,63 +124,115 @@ export default {
       dialogVisible.value = false;
     };
 
+
+
+    //点击上传服务器按钮当输入框内有内容向input接口发送数据，当有文件上传时向upload发送文件并将发挥的数据存储在session中
     const submitUpload = async () => {
       if (inputOrUpload.value === 'input') {
         try {
-          const response = await postdata('/input', {
-            message: inputText.value
-          })
-          console.log(response.data);
+          // const response = await postdata('/input', {
+          //   article: inputText.value
+          // })
+          var responsedata={
+            article: inputText.value
+          }
           // 将后端返回的数据存储到sessionStorage中
-          sessionStorage.setItem('sessionData', JSON.stringify(response.data));
-          sessionData.value = response.data;
+          sessionStorage.setItem('sessionData', JSON.stringify(responsedata));
+          sessionData.value = responsedata;
+          responseData.value = responsedata; // 将返回的数据存储到 responseData 中
         } catch (error) {
           console.error('Error:', error);
         }
       } else if (inputOrUpload.value === 'upload') {
-        alert("test")
+        //alert("test")
         // 当已选择上传文件时，向服务器的 /upload 接口发送文件
         const formData = new FormData();
-        formData.append('file', uploadFile.value);
+        formData.append('file', img);
+        console.log(img)
         try {
-          const response = await postdata(formData,'/upload', );
+          const response = postdata(img.value,"/AI/OCR")
+
           console.log(response.data);
           // 将后端返回的数据存储到sessionStorage中
           sessionStorage.setItem('sessionData', JSON.stringify(response.data));
           sessionData.value = response.data;
+          responseData.value = response.data; // 将返回的数据存储到 responseData 中
         } catch (error) {
           console.error('Error:', error);
         }
       }
     };
 
+    //确认文章内容无误，将文章存入session中
+    const confirm=()=>{
+      try {
+        // const response = await postdata('/input', {
+        //   article: inputText.value
+        // })
+        var responsedata = {
+          article: inputText.value
+        }
+        // 将后端返回的数据存储到sessionStorage中
+        sessionStorage.setItem('sessionData', JSON.stringify(responsedata));
+        sessionData.value = responsedata;
+        responseData.value = responsedata;
+      }
+      catch (error) {
+        console.error('Error:', error);
+      }
+      finally {
+        closeDialog();
+      }
+   };
+
+
+
+    //在用户问问题之前先检测session中是否有数据没有则提示用户先上传文章。
+    // 当用户选择概要抽取向summary_extraction接口发送数据以及session中的数据
+    //当用户选择对话向conversation接口发送数据以及session中的数据
     async function sendMessage() {
+      // 获取sessionStorage中存储的数据
+      const storedData = JSON.parse(sessionStorage.getItem('sessionData'));
+      // 如果没有存储的数据，提醒用户先上传文章
+      if (!storedData) {
+        // 使用 ElMessage 显示提醒信息
+        ElMessage.warning({
+          message: '请先上传文章',
+          type: 'warning',
+        });
+        return;  // 提前退出函数
+      }
       if (newMessage.value.trim() !== '') {
         messages.value.push({ sender: 'User', text: newMessage.value })
         // 获取sessionStorage中存储的数据
         const storedData = JSON.parse(sessionStorage.getItem('sessionData'));
-
-        if (value.value === 'summary_extraction') {
+        if(newMessage.value.trim() === '查看当前文章')
+          messages.value.push({ sender: 'ChatGPT',text:  storedData.article })
+        if (value.value === 'conversation') {
           try {
-            const response = await axios.post('/summary_extraction', {
-              message: newMessage.value,
-              sessionData: storedData  // 将sessionData包含在请求中
-            })
+
+            const response = await postdata( {
+              "question":newMessage.value.trim(),
+              "context": storedData.article  // 将sessionData包含在请求中
+            },'/AI/MRC')
+            console.log(response)
             messages.value.push({ sender: 'ChatGPT', text: response.data })
           } catch (error) {
             console.error('Error:', error)
           }
         }
-        if (value.value === 'conversation') {
-          try {
-            const response = await axios.post('/conversation', {
-              message: newMessage.value,
-              sessionData: storedData  // 将sessionData包含在请求中
-            })
+        if (value.value === 'summary_extraction') {
+          if(newMessage.value.trim() === "概括这篇文章") {
+            try {
+              const response = await postdata({
+                "article": storedData.article,
+                "summary": ""// 将sessionData包含在请求中
+              }, "/AI/summary")
 
-            messages.value.push({ sender: 'ChatGPT', text: response.data })
-          } catch (error) {
-            console.error('Error:', error)
+              messages.value.push({sender: 'ChatGPT', text: response.data.summary})
+            } catch (error) {
+              console.error('Error:', error)
+            }
           }
         }
         newMessage.value = ''
@@ -221,6 +281,8 @@ export default {
       inputOrUpload,
       uploadFile,
       beforeUpload,
+      closeDialog,
+      confirm
     };
   }
 }

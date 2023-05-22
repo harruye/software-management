@@ -55,7 +55,7 @@ server.register_function(trans, 'trans')
 
 def text2rank(article):
 
-    res={"article":article,"summary":getSummary(article,3)}
+    res={"article":article,"summary":getSummary(article)}
     resjson=json.dumps(res,ensure_ascii=False)
     print(resjson)
     return resjson
@@ -65,10 +65,12 @@ server.register_function(text2rank, 'text2rank')
 def MRC(question,context):
     res={"question":question,"context":context,"answer":answer_question(question, context)}
     resjson=json.dumps(res,ensure_ascii=False)
+    print(res)
     return resjson
 
 server.register_function(MRC, 'MRC')
 def OCR(pic_path):
+    print(pic_path)
     text=pic_to_text(pic_path,"thresh")
     res = {"file_path": pic_path, "article": text}
     resjson = json.dumps(res, ensure_ascii=False)
