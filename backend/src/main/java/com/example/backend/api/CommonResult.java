@@ -1,9 +1,11 @@
 package com.example.backend.api;
 
 import io.swagger.annotations.ApiModel;
+import lombok.ToString;
 
 
 @ApiModel("Api通用数据")
+@ToString
 public class CommonResult<T> {
     /**
      * 状态码

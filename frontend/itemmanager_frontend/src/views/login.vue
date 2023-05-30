@@ -65,6 +65,7 @@ export default {
 
         if (response["code"] === 200) {
           console.log(response)
+          sessionStorage.setItem('user', response["data"].uname)
            router.push({name: 'index'});
         } else {
           formRef.value.resetFields();

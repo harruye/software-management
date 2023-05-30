@@ -4,7 +4,7 @@
     <el-form :model="form" ref="formRef" class="form">
       <h3 class="login-title">欢迎注册</h3>
       <el-form-item label="Username" class="inputBox">
-        <el-input v-model="form.uame" @blur="validateUsername" placeholder="请输入账号"></el-input>
+        <el-input v-model="form.uname"  placeholder="请输入姓名"></el-input>
         <p v-if="usernameError" class="error-text">Username should only contain letters and numbers</p>
       </el-form-item>
       <el-form-item label="Password" class="inputBox">
@@ -38,21 +38,21 @@ import {postdata} from "@/http/data";
 export default {
   setup() {
     const router = useRouter();
-    const form = ref({ uname: '', upwd: '', confirmPassword: '',utele:'' });
+    const form = ref({ upwd: '', confirmPassword: '',utele:'',uname:''});
     const formRef = ref(null);
     const usernameError = ref(false);
     const passwordError = ref(false);
     const confirmPasswordError = ref(false);
 
-    const validateUsername = () => {
-      const pattern = /^[A-Za-z0-9]*$/;
-      if (!pattern.test(form.value.uname)) {
-        usernameError.value = true;
-        form.value.username = '';
-      } else {
-        usernameError.value = false;
-      }
-    };
+    // const validateUsername = () => {
+    //   const pattern = /^[A-Za-z0-9]*$/;
+    //   if (!pattern.test(form.value.uname)) {
+    //     usernameError.value = true;
+    //     form.value.uname = '';
+    //   } else {
+    //     usernameError.value = false;
+    //   }
+    // };
 
     const validatePassword = () => {
       const pattern = /^[A-Za-z0-9]*$/;
@@ -81,7 +81,8 @@ export default {
       try {
         const response = await postdata(form.value,"/customer/adduser");
         if (response["code"] === 200) {
-          ElMessage.success('恭喜你注册成功');
+          ElMessage.success('恭喜你注册成功,注册id号为'+response["data"]["uid"]);
+          await router.push({name: 'home'})
         } else {
           ElMessage.error('注册失败');
         }
@@ -95,7 +96,7 @@ export default {
       form,
       formRef,
       backLogin,
-      validateUsername,
+
       validatePassword,
       usernameError,
       passwordError,

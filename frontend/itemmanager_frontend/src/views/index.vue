@@ -1,9 +1,9 @@
 <template>
   <el-container>
     <el-header>
-      <h1>Chat with ChatGPT</h1>
+      <h1></h1>
     </el-header>
-    <el-main>
+    <el-main style="height: 650px;">
       <div>
         <el-button type="primary" @click="dialogVisible = true">上传文章</el-button>
       </div>
@@ -15,8 +15,7 @@
         <el-input type="textarea" v-model="inputText" placeholder="请输入..." :autosize="{ minRows: 2}"></el-input>
 
         <el-upload
-
-            :action="'http://localhost:8088/AI/OCR'"
+            :action="'http://localhost:8088/AI/upload'"
             :on-success="handleUploadSuccess"
             :on-error="handleUploadError"
             :before-upload="beforeUpload"
@@ -81,7 +80,7 @@ export default {
     const uploadFile = ref(null);
     const sessionData = ref('');
     const messages = ref([
-      {sender: 'ChatGPT', text: '请先上传文章'}
+      {sender: 'Robot', text: '请先上传文章'}
     ])
     const options = ref([
       { value: 'summary_extraction', label: '概要抽取', disabled: false },
@@ -150,7 +149,7 @@ export default {
         formData.append('file', img);
         console.log(img)
         try {
-          const response = postdata(img.value,"/AI/OCR")
+          const response = postdata(img.value,"/AI/upload")
 
           console.log(response.data);
           // 将后端返回的数据存储到sessionStorage中
@@ -203,11 +202,11 @@ export default {
         return;  // 提前退出函数
       }
       if (newMessage.value.trim() !== '') {
-        messages.value.push({ sender: 'User', text: newMessage.value })
+        messages.value.push({ sender: sessionStorage.getItem('user'), text: newMessage.value })
         // 获取sessionStorage中存储的数据
         const storedData = JSON.parse(sessionStorage.getItem('sessionData'));
         if(newMessage.value.trim() === '查看当前文章')
-          messages.value.push({ sender: 'ChatGPT',text:  storedData.article })
+          messages.value.push({ sender: 'Robot',text:  storedData.article })
         if (value.value === 'conversation') {
           try {
 
@@ -216,7 +215,7 @@ export default {
               "context": storedData.article  // 将sessionData包含在请求中
             },'/AI/MRC')
             console.log(response)
-            messages.value.push({ sender: 'ChatGPT', text: response.data })
+            messages.value.push({ sender: 'Robot', text: response.data })
           } catch (error) {
             console.error('Error:', error)
           }
@@ -229,7 +228,7 @@ export default {
                 "summary": ""// 将sessionData包含在请求中
               }, "/AI/summary")
 
-              messages.value.push({sender: 'ChatGPT', text: response.data.summary})
+              messages.value.push({sender: 'Robot', text: response.data.summary})
             } catch (error) {
               console.error('Error:', error)
             }

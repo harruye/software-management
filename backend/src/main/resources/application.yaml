@@ -58,11 +58,11 @@ spring:
     active: dev
 
 # Mybatis??
-mybatis:
+mybatis-plus:
   # ??XML???????????????
-  type-aliases-package: com.example.pojo
+  type-aliases-package: com.example.backend.pojo
   # ??MyBatis?xml??????
-  mapper-locations: classpath*:com/**/mapper/*.xml
+  mapper-locations: mapper/*.xml
 
 
 
